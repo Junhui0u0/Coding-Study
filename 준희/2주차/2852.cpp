@@ -39,6 +39,10 @@ int main() {
 				ret_a[0]--;
 				ret_a[1] += 60;
 			}
+			if (ret_a[1] >= 60) {
+				ret_a[0]++;
+				ret_a[1] -= 60;
+			}
 		}
 		else if (a < b) {
 			ret_b[0] += last_h - prev_h;
@@ -47,9 +51,12 @@ int main() {
 				ret_b[0]--;
 				ret_b[1] += 60;
 			}
+			if (ret_b[1] >= 60) {
+				ret_b[0]++;
+				ret_b[1] -= 60;
+			}
 		}
 	}
-
 
 	string sa = "";
 	for (int i = 0;i < 2;i++) {
