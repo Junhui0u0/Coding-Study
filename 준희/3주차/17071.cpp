@@ -3,42 +3,9 @@
 using namespace std;
 const int MAX = 500000;
 
-int n, k;
-int ret = -1;
-int visited[MAX + 2];
-queue<int> q;
-
-int cal(int time) {
-	int sum = 0;
-	for (int i = 1;i < time;i++) {
-		sum += i;
-	}
-	return sum;
-}
-
-void bfs(int n) {
-	visited[n] = 1;
-	q.push(n);
-
-	while (q.size()) {
-		int now = q.front();
-		q.pop();
-
-		if (now == cal(visited[now]) + k) {
-			ret = visited[now] - 1;
-			return;
-		}
-
-		for (int next : {now - 1, now + 1, now * 2}) {
-			if (0 <= next && next <= MAX) {
-				visited[next] = visited[now] + 1;
-				q.push(next);
-			}
-		}
-	}
-	ret = -1;
-	return;
-}
+int n, k, chk;
+int visited[2][MAX + 4];
+int t = 1;
 
 int main() {
 	ios_base::sync_with_stdio(false);
@@ -46,24 +13,41 @@ int main() {
 	cout.tie(NULL);
 
 	cin >> n >> k;
-
-	bfs(n);
-	/*
-		for (int i = 0;i <= MAX - k;i++) {
-			/*
-			if (i == visited[k+ cal(i)]) {
-				ret = i;
-				break;
-			}
-
-			if (i == visited[k+ cal(i)]) {
-				ret = i;
-				break;
-			}
-			if (k + cal(i) > MAX) break;
+	if (n == k) {
+		cout << "0\n";
+		return 0;
+	}
+	queue<int> q;
+	visited[0][n] = 1;
+	q.push(n);
+	while (q.size()) {
+		k += t;
+		if (k > MAX) break;
+		if (visited[t % 2][k]) {
+			chk = 1;
+			break;
 		}
-	*/
-	cout << ret << "\n";
+		int q_size = q.size();
+		for (int i = 0;i < q_size;i++) {
+			int now = q.front();
+			q.pop();
+			for (int next : {now - 1, now + 1, now * 2}) {
+				if (next<0 || next>MAX || visited[t % 2][next]) continue;
+				visited[t % 2][next] = visited[(t + 1) % 2][now] + 1;
+				if (next == k) {
+					chk = 1;
+					break;
+				}
+				q.push(next);
+			}
+			if (chk) break;
+		}
+		if (chk) break;
+		t++;
+	}
+
+	if (chk) cout << t << "\n";
+	else cout << "-1\n";
 
 	return 0;
 }
