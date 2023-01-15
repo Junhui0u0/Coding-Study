@@ -3,7 +3,7 @@
 #include <algorithm>
 using namespace std;
 int n, m;
-int arr[54][54]
+int arr[54][54];
 int result = 987654321;
 vector<vector<int>>chickenList;
 vector<pair<int, int>> home, chicken;
